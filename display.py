@@ -62,7 +62,7 @@ class Feeder:
 
                 self.ui.win.addstr(9, 33, get_time(self.start))
                 self.ui.refresh()
-                sleep(1)
+                sleep(0.1)
         except KeyboardInterrupt:
             self.stop()
             self.ui.quit_ui()
