@@ -2,7 +2,7 @@
 
 Python script using Curses to display a simple timer in the command line.
 
-> **As the Windows version of Python doesn’t include the Curses module, Windows is not supported (yet).**
+**As the Windows version of Python doesn’t include the Curses module, Windows is not supported (yet).**
 
 ## Installation Instructions
 
