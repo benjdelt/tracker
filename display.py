@@ -34,7 +34,7 @@ class UserInterface:
         curses.curs_set(1)
         curses.echo()
         curses.endwin()
-        exit(f"Time: {get_time(self.start)}")
+        exit(f"Time: {get_time(self.start)}\n")
 
 
 class Feeder:
