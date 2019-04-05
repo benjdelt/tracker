@@ -57,6 +57,8 @@ class Feeder:
                     if line.strip() == "q":
                         self.stop()
                         self.ui.quit_ui()
+                        if self.paused:
+                            self.start = time() + 1
                         exit(f"Time: {timer.get_time(self.start, self.recorded_time)}\n")
 
                         break
@@ -77,6 +79,8 @@ class Feeder:
         except KeyboardInterrupt:
             self.stop()
             self.ui.quit_ui()
+            if self.paused:
+                self.start = time() + 1
             exit(f"Time: {timer.get_time(self.start, self.recorded_time)}\n")
 
 
