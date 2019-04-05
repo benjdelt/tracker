@@ -7,7 +7,7 @@ Python script using Curses to display a simple timer in the command line.
 ## Installation Instructions
 
 1. Fork this repository, then clone your fork of this repository and `cd` into it.
-2. Change the `tracker` file permissions to make it eecutable:
+2. Change the `tracker` file permissions to make it executable:
    ```bash
    $ chmod +x ./tracker
    ```

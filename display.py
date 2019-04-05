@@ -4,7 +4,7 @@ import sys
 from select import select
 from time import sleep, time
 
-from timer import get_time
+import timer
 
 
 class UserInterface:
@@ -20,7 +20,7 @@ class UserInterface:
 
         self.win.addstr(1, 30, "Tracker")
         self.win.addstr(2, 30, "=======")
-        self.win.addstr(4, 1, "Press 'q' to quit.")
+        self.win.addstr(4, 1, "Press 'p' to pause/unpause or 'q' to quit.")
 
         self.start = start
 
@@ -34,7 +34,7 @@ class UserInterface:
         curses.curs_set(1)
         curses.echo()
         curses.endwin()
-        exit(f"Time: {get_time(self.start)}\n")
+        exit(f"Time: {timer.get_time(self.start)}\n")
 
 
 class Feeder:
@@ -42,6 +42,8 @@ class Feeder:
         self.running = False
         self.ui = UserInterface(start)
         self.start = start
+        self.recorded_time = 0
+        self.paused = False
 
     def stop(self):
         self.running = False
@@ -59,8 +61,16 @@ class Feeder:
                         self.stop()
                         self.ui.quit_ui()
                         break
-
-                self.ui.win.addstr(9, 33, get_time(self.start))
+                    elif line.strip() == "p":
+                        if not self.paused:
+                            self.recorded_time = timer.pause(self.start, self.recorded_time)
+                            self.paused = True
+                        else:
+                            self.start = time()
+                            self.paused = False
+                        
+                if not self.paused:
+                    self.ui.win.addstr(9, 33, timer.get_time(self.start, self.recorded_time))
                 self.ui.refresh()
                 sleep(0.1)
         except KeyboardInterrupt:
