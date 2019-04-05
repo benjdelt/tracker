@@ -6,6 +6,18 @@ Python script using Curses to display a simple timer in the command line.
 
 ## Getting Started
 
+Make sure that Python 3 is installed of your computer:
+
+```bash
+$ python3 --version
+```
+
+If Python 3 is not installed, you can follow these instructions:
+- [Ubuntu](https://docs.python-guide.org/starting/install3/osx/)
+- [Mac](https://docs.python-guide.org/starting/install3/linux/)
+
+Once Python 3 is installed, you can start with Tracker:
+
 1. Fork this repository, then clone your fork of this repository and `cd` into it.
 2. Change the `tracker` file permissions to make it executable:
    ```bash
@@ -27,6 +39,12 @@ Python script using Curses to display a simple timer in the command line.
     See [this post](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path) for more information.
 
 ## Usage
+
+```bash
+$ tracker [TASK]
+```
+
+Logs time for a specific TASK to the command line.
 
 While the script is running,: 
 - Press `p` to pause or unpause the timer. 
