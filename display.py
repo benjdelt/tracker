@@ -63,9 +63,11 @@ class Feeder:
                     elif line.strip() == "p":
                         if not self.paused:
                             self.recorded_time = timer.pause(self.start, self.recorded_time)
+                            self.ui.win.addstr(14,29, "**PAUSED**")
                             self.paused = True
                         else:
                             self.start = time()
+                            self.ui.win.addstr(14,29, "          ")
                             self.paused = False
                         
                 if not self.paused:
@@ -75,6 +77,7 @@ class Feeder:
         except KeyboardInterrupt:
             self.stop()
             self.ui.quit_ui()
+            exit(f"Time: {timer.get_time(self.start, self.recorded_time)}\n")
 
 
 if __name__ == "__main__":
