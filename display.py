@@ -35,27 +35,23 @@ class UserInterface:
 
 
 class Feeder:
-    def __init__(self, task):
+    def __init__(self, start):
         self.running = False
         self.ui = UserInterface()
-        self.task = task or "None"
-        self.start = time()
+        self.start = start
         self.recorded_time = 0
         self.paused = False
 
     def run(self):
         self.running = True
-        self.ui.win.addstr(11, 1, f"Task: {self.task}")
         self.feed()
-
 
     def quit(self):
         self.running = False
         self.ui.quit_ui()
         if self.paused:
             self.start = time() + 1
-        task = "" if self.task == "None" else f" in {self.task}" 
-        exit(f"Time{task}: {timer.get_time_string(self.start, self.recorded_time)}")
+        exit(f"Time: {timer.get_time_string(self.start, self.recorded_time)}")
 
     def feed(self):
         try:
