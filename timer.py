@@ -1,5 +1,5 @@
 from math import ceil
-from time import sleep, time
+from time import time
 
 
 def pad_zero(n):
@@ -17,14 +17,10 @@ def format_time(seconds):
     return f"{hours}:{pad_zero(minutes)}:{pad_zero(seconds)}"
 
 
-def get_time(start):
-    count = ceil(time() - start)
+def compute_time(start, recorded_time=0):
+    return recorded_time + ceil(time() - start)
+
+
+def get_time_string(start, recorded_time=0):
+    count = compute_time(start, recorded_time)
     return f"{format_time(count)}"
-
-
-if __name__ == '__main__':
-    start = time()
-    while True:
-        output = get_time(start)
-        sleep(1)
-        print(output, end="\r")

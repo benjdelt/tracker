@@ -4,10 +4,10 @@ Python script using Curses to display a simple timer in the command line.
 
 **As the Windows version of Python doesn’t include the Curses module, Windows is not supported (yet).**
 
-## Installation Instructions
+## Getting Started
 
 1. Fork this repository, then clone your fork of this repository and `cd` into it.
-2. Change the `tracker` file permissions to make it eecutable:
+2. Change the `tracker` file permissions to make it executable:
    ```bash
    $ chmod +x ./tracker
    ```
@@ -25,3 +25,9 @@ Python script using Curses to display a simple timer in the command line.
         export PATH=</path/to/tracker/directory>:$PATH
         ```
     See [this post](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path) for more information.
+
+## Usage
+
+While the script is running,: 
+- Press `p` to pause or unpause the timer. 
+- Press `q` or `CTRL-C` (`CMD-C`) to quit the tracker. The total logged time will be displayed in the command line.

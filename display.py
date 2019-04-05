@@ -4,11 +4,11 @@ import sys
 from select import select
 from time import sleep, time
 
-from timer import get_time
+import timer
 
 
 class UserInterface:
-    def __init__(self, start):
+    def __init__(self):
         self.stdscr = curses.initscr()
         curses.noecho()
         curses.cbreak()
@@ -20,9 +20,7 @@ class UserInterface:
 
         self.win.addstr(1, 30, "Tracker")
         self.win.addstr(2, 30, "=======")
-        self.win.addstr(4, 1, "Press 'q' to quit.")
-
-        self.start = start
+        self.win.addstr(4, 1, "Press 'p' to pause/unpause or 'q' to quit.")
 
     def refresh(self):
         curses.panel.update_panels()
@@ -34,21 +32,26 @@ class UserInterface:
         curses.curs_set(1)
         curses.echo()
         curses.endwin()
-        exit(f"Time: {get_time(self.start)}\n")
 
 
 class Feeder:
     def __init__(self, start):
         self.running = False
-        self.ui = UserInterface(start)
+        self.ui = UserInterface()
         self.start = start
-
-    def stop(self):
-        self.running = False
+        self.recorded_time = 0
+        self.paused = False
 
     def run(self):
         self.running = True
         self.feed()
+
+    def quit(self):
+        self.running = False
+        self.ui.quit_ui()
+        if self.paused:
+            self.start = time() + 1
+        exit(f"Time: {timer.get_time_string(self.start, self.recorded_time)}")
 
     def feed(self):
         try:
@@ -56,16 +59,30 @@ class Feeder:
                 while sys.stdin in select([sys.stdin], [], [], 0)[0]:
                     line = sys.stdin.read(1)
                     if line.strip() == "q":
-                        self.stop()
-                        self.ui.quit_ui()
+                        self.quit()
                         break
-
-                self.ui.win.addstr(9, 33, get_time(self.start))
+                    elif line.strip() == "p":
+                        if self.paused:
+                            self.start = time()
+                            self.ui.win.addstr(14, 29, "          ")
+                            self.paused = False
+                        else:
+                            self.recorded_time = timer.compute_time(
+                                self.start,
+                                self.recorded_time
+                            )
+                            self.ui.win.addstr(14, 29, "**PAUSED**")
+                            self.paused = True
+                if not self.paused:
+                    self.ui.win.addstr(
+                        9,
+                        33,
+                        timer.get_time_string(self.start, self.recorded_time)
+                    )
                 self.ui.refresh()
                 sleep(0.1)
         except KeyboardInterrupt:
-            self.stop()
-            self.ui.quit_ui()
+            self.quit()
 
 
 if __name__ == "__main__":
