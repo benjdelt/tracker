@@ -18,6 +18,6 @@ Python script using Curses to display a simple timer in the command line.
    - Open `~/.profile` (or `~/.zshrc` for zsh) with the editor of your choice
    - Add this line to the end of the file:
         ```bash
-        export PATH=</path/to/tracker/directory>$PATH
+        export PATH=</path/to/tracker/directory>:$PATH
         ```
     See [this post](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path) for more information.
