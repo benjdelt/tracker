@@ -15,7 +15,7 @@ Python script using Curses to display a simple timer in the command line.
    ```bash
    $ ./tracker
    ```
-4. Optional: Add the directory to the `$PATH` variable so you can call the script from anywhere using the following command:
+4. *Optional*: Add the directory to the `$PATH` variable so you can call the script from anywhere using the following command:
    ```bash
    $ tracker
    ```
