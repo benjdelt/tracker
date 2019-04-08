@@ -1,6 +1,7 @@
 import sys
 import os
 import csv
+from save import save
 from user_interface import UserInterface
 from select import select
 
@@ -38,10 +39,10 @@ class Feeder:
             while self.running:
                 while sys.stdin in select([sys.stdin], [], [], 0)[0]:
                     line = sys.stdin.read(1)
-                    if line.strip() == "q":
+                    if line.strip().lower() == "q":
                         self.quit()
                         break
-                    elif line.strip() == "p":
+                    elif line.strip().lower() == "p":
                         if self.paused:
                             self.start = time.time()
                             self.ui.win.addstr(14, 29, "          ")
@@ -53,42 +54,8 @@ class Feeder:
                             )
                             self.ui.win.addstr(14, 29, "**PAUSED**")
                             self.paused = True
-                    elif line.strip() == "s":
-                        header = ["Start", "Finish", "Logged", "Total"]
-                        start = time.ctime(self.first_start)
-                        finish = time.ctime()
-                        if self.paused:
-                            logged = timer.format_time(self.recorded_time)
-                        else:
-                            logged = timer.get_time_string(self.start, self.recorded_time)
-                        current_row = {"Start": start, "Finish": finish, "Logged": logged, "Total": logged}
-                        lines = []
-                        try:
-                            with open(f"./{self.task}.csv", "r") as csvfile:
-                                taskreader = csv.DictReader(csvfile)
-                                headers = taskreader.fieldnames
-                                for row in taskreader:
-                                    last_task = row
-                                    lines.append(row)
-                                if last_task["Start"] == start:
-                                    lines = lines[0:-1]
-                                if len(lines) > 0:
-                                    last_task = lines[-1]
-                                    total_seconds = timer.parse_time_string(last_task["Total"])
-                                    current_row["Total"] = timer.format_time(timer.parse_time_string(logged) + total_seconds)
-                            csvfile.close()
-                            with open(f"./{self.task}.csv", "w", newline='') as csvfile:
-                                lines.append(current_row)
-                                taskwriter = csv.DictWriter(csvfile, header)
-                                taskwriter.writeheader()
-                                for line in lines:
-                                    taskwriter.writerow(line)
-
-                        except FileNotFoundError:
-                            with open(f"./{self.task}.csv", "w", newline='') as csvfile:
-                                taskwriter = csv.DictWriter(csvfile, header)
-                                taskwriter.writeheader()
-                                taskwriter.writerow(current_row)
+                    elif line.strip().lower() == "s":
+                        save(self.first_start, self.paused, self.recorded_time, self.start, self.task)
                 if not self.paused:
                     self.ui.win.addstr(
                         9,
