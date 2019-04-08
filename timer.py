@@ -17,6 +17,14 @@ def format_time(seconds):
     return f"{hours}:{pad_zero(minutes)}:{pad_zero(seconds)}"
 
 
+def parse_time_string(time_string):
+    time_list = time_string.split(":")
+    time_list[0] = int(time_list[0]) * 3600
+    time_list[1] = int(time_list[1]) * 60
+    time_list[2] = int(time_list[2])
+    return sum(time_list)
+
+
 def compute_time(start, recorded_time=0):
     return recorded_time + ceil(time() - start)
 
