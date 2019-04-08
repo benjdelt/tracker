@@ -54,13 +54,14 @@ class Feeder:
                             self.ui.win.addstr(14, 29, "**PAUSED**")
                             self.paused = True
                     elif line.strip() == "s":
+                        header = ["Start", "Finish", "Logged", "Total"]
                         start = time.ctime(self.first_start)
                         finish = time.ctime()
                         if self.paused:
-                            logged = self.recorded_time
+                            logged = timer.format_time(self.recorded_time)
                         else:
                             logged = timer.get_time_string(self.start, self.recorded_time)
-                        current_row = {"Start": start, "Finish": finish, "Logged": logged}
+                        current_row = {"Start": start, "Finish": finish, "Logged": logged, "Total": logged}
                         lines = []
                         try:
                             with open(f"./{self.task}.csv", "r") as csvfile:
@@ -71,17 +72,21 @@ class Feeder:
                                     lines.append(row)
                                 if last_task["Start"] == start:
                                     lines = lines[0:-1]
+                                if len(lines) > 0:
+                                    last_task = lines[-1]
+                                    total_seconds = timer.parse_time_string(last_task["Total"])
+                                    current_row["Total"] = timer.format_time(timer.parse_time_string(logged) + total_seconds)
                             csvfile.close()
                             with open(f"./{self.task}.csv", "w", newline='') as csvfile:
                                 lines.append(current_row)
-                                taskwriter = csv.DictWriter(csvfile, ["Start", "Finish", "Logged"])
+                                taskwriter = csv.DictWriter(csvfile, header)
                                 taskwriter.writeheader()
                                 for line in lines:
                                     taskwriter.writerow(line)
 
                         except FileNotFoundError:
                             with open(f"./{self.task}.csv", "w", newline='') as csvfile:
-                                taskwriter = csv.DictWriter(csvfile, ["Start", "Finish", "Logged"])
+                                taskwriter = csv.DictWriter(csvfile, header)
                                 taskwriter.writeheader()
                                 taskwriter.writerow(current_row)
                 if not self.paused:
