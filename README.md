@@ -53,12 +53,12 @@ Logs time for a specific TASK to the command line and auto saves every minute in
 The tracker will be auto saved upon quitting as well as every minute since the timer has started, even 
 if it is paused. Press `s` to save manually.
 
-The tracker is saved in a file named `{task}.csv` where `{task}` is the task name given when launching the tracker. If no file by that name exists, one will be created. If no task were provided when launching the tracker, it will be saved under `None.csv`.
+The tracker is saved in a file named `{task}.csv` where `{task}` is the name of the task given when launching the tracker. If no file by that name exists, one will be created. If no task were provided when launching the tracker, it will be saved under `None.csv`.
 
 The created file contains the following columns:
 
 - `Started`: the date and time at which the tracker was launched.
-- `Finished`: the date and time at which the tracker was saved.
+- `Last Saved`: the date and time at which the tracker was saved.
 - `Logged`: the time logged by the tracker since it started (excluding paused time) under the format `hh:mm:ss`.
 - `Total`: the total time logged in the file under the format `hh:mm:ss`.
 

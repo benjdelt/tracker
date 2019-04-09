@@ -8,7 +8,7 @@ class Save:
 
     def __init__(self, first_start, paused, recorded_time, start, task):
         self.task = task
-        self.header = ["Start", "Finish", "Logged", "Total"]
+        self.header = ["Start", "Last Saved", "Logged", "Total"]
         self.row_start = time.ctime(first_start)
 
         if paused:
@@ -18,7 +18,7 @@ class Save:
 
         self.current_row = {
             "Start": self.row_start,
-            "Finish": time.ctime(),
+            "Last Saved": time.ctime(),
             "Logged": self.row_logged,
             "Total": self.row_logged
         }
