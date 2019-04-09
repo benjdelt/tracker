@@ -1,13 +1,10 @@
 import sys
-import os
-import csv
-from save import save
-from user_interface import UserInterface
+import time
 from select import select
 
-import time
-
 import timer
+from save import Save
+from user_interface import UserInterface
 
 
 class Feeder:
@@ -25,13 +22,12 @@ class Feeder:
         self.ui.win.addstr(11, 1, f"Task: {self.task}")
         self.feed()
 
-
     def quit(self):
         self.running = False
         self.ui.quit_ui()
         if self.paused:
             self.start = time.time() + 1
-        task = f" in {self.task}" if self.task != "None" else "" 
+        task = f" in {self.task}" if self.task != "None" else ""
         exit(f"Time{task}: {timer.get_time_string(self.start, self.recorded_time)}")
 
     def feed(self):
@@ -55,7 +51,14 @@ class Feeder:
                             self.ui.win.addstr(14, 29, "**PAUSED**")
                             self.paused = True
                     elif line.strip().lower() == "s":
-                        save(self.first_start, self.paused, self.recorded_time, self.start, self.task)
+                        save = Save(
+                            self.first_start,
+                            self.paused,
+                            self.recorded_time,
+                            self.start,
+                            self.task
+                        )
+                        save.save_to_csv()
                 if not self.paused:
                     self.ui.win.addstr(
                         9,

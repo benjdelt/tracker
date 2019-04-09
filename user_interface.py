@@ -1,6 +1,7 @@
 import curses
 import curses.panel
 
+
 class UserInterface:
     def __init__(self):
         self.stdscr = curses.initscr()
@@ -14,7 +15,8 @@ class UserInterface:
 
         self.win.addstr(1, 30, "Tracker")
         self.win.addstr(2, 30, "=======")
-        self.win.addstr(4, 1, "Press 'p' to pause/unpause, 's' to save to CSV or 'q' to quit.")
+        instructions = "Press 'p' to pause/unpause, 's' to save to CSV or 'q' to quit."
+        self.win.addstr(4, 1, instructions)
 
     def refresh(self):
         curses.panel.update_panels()

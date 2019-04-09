@@ -1,42 +1,59 @@
 import csv
 import time
+
 import timer
 
-def save(first_start, paused, recorded_time, start, task):
-    header = ["Start", "Finish", "Logged", "Total"]
-    row_start = time.ctime(first_start)
-    row_finish = time.ctime()
-    if paused:
-        row_logged = timer.format_time(recorded_time)
-    else:
-        row_logged = timer.get_time_string(start, recorded_time)
-    current_row = {"Start": row_start, "Finish": row_finish, "Logged": row_logged, "Total": row_logged}
-    lines = []
-    try:
-        # Read the file to get the total and check if the current line already exists
-        with open(f"./{task}.csv", "r") as csvfile:
+
+class Save:
+
+    def __init__(self, first_start, paused, recorded_time, start, task):
+        self.task = task
+        self.header = ["Start", "Finish", "Logged", "Total"]
+        self.row_start = time.ctime(first_start)
+
+        if paused:
+            self.row_logged = timer.format_time(recorded_time)
+        else:
+            self.row_logged = timer.get_time_string(start, recorded_time)
+
+        self.current_row = {
+            "Start": self.row_start,
+            "Finish": time.ctime(),
+            "Logged": self.row_logged,
+            "Total": self.row_logged
+        }
+        self.lines = []
+
+    def get_data_from_file(self):
+        with open(f"./{self.task}.csv", "r") as csvfile:
             taskreader = csv.DictReader(csvfile)
-            headers = taskreader.fieldnames
             for row in taskreader:
                 last_task = row
-                lines.append(row)
-            if last_task["Start"] == row_start:
-                lines = lines[0:-1]
-            if len(lines) > 0:
-                last_task = lines[-1]
+                self.lines.append(row)
+            # If the line exists, remove it
+            if last_task["Start"] == self.row_start:
+                self.lines = self.lines[0:-1]
+            # Only add the total and logged time if there is more than one line
+            # otherwise, the total remains the logged time
+            if len(self.lines) > 0:
+                last_task = self.lines[-1]
                 total_seconds = timer.parse_time_string(last_task["Total"])
-                current_row["Total"] = timer.format_time(timer.parse_time_string(row_logged) + total_seconds)
-        csvfile.close()
-        # Add the current line or update it
-        with open(f"./{task}.csv", "w", newline='') as csvfile:
-            lines.append(current_row)
-            taskwriter = csv.DictWriter(csvfile, header)
+                self.current_row["Total"] = timer.format_time(
+                    timer.parse_time_string(self.row_logged) + total_seconds
+                )
+
+    def write_to_file(self):
+        with open(f"./{self.task}.csv", "w", newline='') as csvfile:
+            self.lines.append(self.current_row)
+            taskwriter = csv.DictWriter(csvfile, self.header)
             taskwriter.writeheader()
-            for line in lines:
+            for line in self.lines:
                 taskwriter.writerow(line)
-    # If the file doesn't exist, create it, add the headers and the line
-    except FileNotFoundError:
-        with open(f"./{task}.csv", "w", newline='') as csvfile:
-            taskwriter = csv.DictWriter(csvfile, header)
-            taskwriter.writeheader()
-            taskwriter.writerow(current_row)
+
+    def save_to_csv(self):
+        try:
+            self.get_data_from_file()
+        except FileNotFoundError:
+            pass
+        finally:
+            self.write_to_file()
