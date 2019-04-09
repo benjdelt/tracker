@@ -1,15 +1,18 @@
 import json
 import timer
 import sys
+from pathlib import Path
 
-def strip_final_slash(path):
-    return path[:-1] if path[-1] == "/" else path
+def parse_csv_path(csv_path):
+    if csv_path[0] == "~":
+        csv_path = str(Path.home()) + csv_path[1:]
+    return csv_path[:-1] if csv_path[-1] == "/" else csv_path
 
 file_path = sys.argv[0].split("//")[0]
 with open(f"{file_path}/config.json", "r") as config_file:
     config = json.loads(config_file.read())
     try:
-        csv_path = strip_final_slash(config["csv-path"])
+        csv_path = parse_csv_path(config["csv-path"])
     except:
         csv_path = "."
     try:

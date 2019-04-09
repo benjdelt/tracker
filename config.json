@@ -1,5 +1,5 @@
 {
-    "csv-path": "~/Documents/tracker/",
+    "csv-path": "./",
     "autosave-delay": "1:00",
     "autosave-q": true,
     "autosave-c": false
