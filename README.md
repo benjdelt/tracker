@@ -47,5 +47,6 @@ $ tracker [TASK]
 Logs time for a specific TASK to the command line.
 
 While the script is running,: 
-- Press `p` to pause or unpause the timer. 
+- Press `p` to pause or unpause the timer.
+- Press `s` to save the tracker to a CSV file named after the task. If no file by that name exists, it will be created. If the same tracker is saved several times, the existing line in the CSV file will be updated.
 - Press `q` or `CTRL-C` (`CMD-C`) to quit the tracker. The total logged time will be displayed in the command line.
