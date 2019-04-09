@@ -1,3 +1,4 @@
+import os
 import csv
 import time
 
@@ -44,6 +45,8 @@ class Save:
                 )
 
     def write_to_file(self):
+        if not os.path.exists(config.csv_path):
+            os.makedirs(config.csv_path)
         with open(f"{config.csv_path}/{self.task}.csv", "w", newline='') as csvfile:
             self.lines.append(self.current_row)
             taskwriter = csv.DictWriter(csvfile, self.header)
