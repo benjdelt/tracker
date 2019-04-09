@@ -75,17 +75,17 @@ class Feeder:
                         33,
                         timer.get_time_string(self.start, self.recorded_time)
                     )
-
-                if int(time.time()) != int(self.start):
-                    if (int(time.time()) - int(self.start)) % config.autosave_delay == 0:
-                        save = Save(
-                            self.first_start,
-                            self.paused,
-                            self.recorded_time,
-                            self.start,
-                            self.task
-                        )
-                        save.save_to_csv()
+                if not config.autosave_delay == 0:
+                    if int(time.time()) != int(self.start):
+                        if (int(time.time()) - int(self.start)) % config.autosave_delay == 0:
+                            save = Save(
+                                self.first_start,
+                                self.paused,
+                                self.recorded_time,
+                                self.start,
+                                self.task
+                            )
+                            save.save_to_csv()
 
                 self.ui.refresh()
                 time.sleep(0.1)
