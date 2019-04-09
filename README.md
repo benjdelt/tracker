@@ -2,7 +2,7 @@
 
 Python script using Curses to display a simple timer in the command line. The logged timers are auto saved to CSV files.
 
-**As the Windows version of Python doesn’t include the Curses module, Windows is not supported (yet).**
+**As the Windows version of Python doesn’t include the Curses module, Windows is not supported.**
 
 ## Getting Started
 
@@ -31,9 +31,9 @@ Once Python 3 is installed, you can start with Tracker:
    ```bash
    $ tracker
    ```
-   - Open `~/.profile` (or `~/.zshrc` for zsh) with the editor of your choice
-   - Add this line to the end of the file:
-        ```bash
+   - Open `~/.pPython script using Curses to display a simple timer in the command line
+   - Add this lPython script using Curses to display a simple timer in the command line
+        ```bashPython script using Curses to display a simple timer in the command line
         export PATH=</path/to/tracker/directory>:$PATH
         ```
     See [this post](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path) for more information.

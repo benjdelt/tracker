@@ -1,6 +1,7 @@
 import csv
 import time
 
+import config
 import timer
 
 
@@ -25,14 +26,14 @@ class Save:
         self.lines = []
 
     def get_data_from_file(self):
-        with open(f"./{self.task}.csv", "r") as csvfile:
+        with open(f"{config.csv_path}/{self.task}.csv", "r") as csvfile:
             taskreader = csv.DictReader(csvfile)
             for row in taskreader:
                 last_task = row
                 self.lines.append(row)
             # If the line exists, remove it
             if last_task["Start"] == self.row_start:
-                self.lines = self.lines[0:-1]
+                self.lines = self.lines[:-1]
             # Only add the total and logged time if there is more than one line
             # otherwise, the total remains the logged time
             if len(self.lines) > 0:
@@ -43,7 +44,7 @@ class Save:
                 )
 
     def write_to_file(self):
-        with open(f"./{self.task}.csv", "w", newline='') as csvfile:
+        with open(f"{config.csv_path}/{self.task}.csv", "w", newline='') as csvfile:
             self.lines.append(self.current_row)
             taskwriter = csv.DictWriter(csvfile, self.header)
             taskwriter.writeheader()

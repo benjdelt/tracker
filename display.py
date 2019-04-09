@@ -2,6 +2,7 @@ import sys
 import time
 from select import select
 
+import config
 import timer
 from save import Save
 from user_interface import UserInterface
@@ -36,14 +37,15 @@ class Feeder:
                 while sys.stdin in select([sys.stdin], [], [], 0)[0]:
                     line = sys.stdin.read(1)
                     if line.strip().lower() == "q":
-                        save = Save(
-                            self.first_start,
-                            self.paused,
-                            self.recorded_time,
-                            self.start,
-                            self.task
-                        )
-                        save.save_to_csv()
+                        if config.autosave_q:
+                            save = Save(
+                                self.first_start,
+                                self.paused,
+                                self.recorded_time,
+                                self.start,
+                                self.task
+                            )
+                            save.save_to_csv()
                         self.quit()
                         break
                     elif line.strip().lower() == "p":
@@ -75,7 +77,7 @@ class Feeder:
                     )
 
                 if int(time.time()) != int(self.start):
-                    if (int(time.time()) - int(self.start)) % 60 == 0:
+                    if (int(time.time()) - int(self.start)) % config.autosave_delay == 0:
                         save = Save(
                             self.first_start,
                             self.paused,
@@ -88,14 +90,15 @@ class Feeder:
                 self.ui.refresh()
                 time.sleep(0.1)
         except KeyboardInterrupt:
-            save = Save(
-                self.first_start,
-                self.paused,
-                self.recorded_time,
-                self.start,
-                self.task
-            )
-            save.save_to_csv()
+            if config.autosave_c:
+                save = Save(
+                    self.first_start,
+                    self.paused,
+                    self.recorded_time,
+                    self.start,
+                    self.task
+                )
+                save.save_to_csv()
             self.quit()
 
 
