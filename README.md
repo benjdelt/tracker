@@ -1,6 +1,6 @@
 # Tracker
 
-Python script using Curses to display a simple timer in the command line.
+Python script using Curses to display a simple timer in the command line. The logged timers are auto saved to CSV files.
 
 **As the Windows version of Python doesn’t include the Curses module, Windows is not supported (yet).**
 
@@ -40,13 +40,32 @@ Once Python 3 is installed, you can start with Tracker:
 
 ## Usage
 
+### Start
+
 ```bash
 $ tracker [TASK]
 ```
 
-Logs time for a specific TASK to the command line.
+Logs time for a specific TASK to the command line and auto saves every minute in a CSV file.
 
-While the script is running,: 
-- Press `p` to pause or unpause the timer.
-- Press `s` to save the tracker to a CSV file named after the task. If no file by that name exists, it will be created. If the same tracker is saved several times, the existing line in the CSV file will be updated.
-- Press `q` or `CTRL-C` (`CMD-C`) to quit the tracker. The total logged time will be displayed in the command line.
+### Save
+
+The tracker will be auto saved upon quitting as well as every minute since the timer has started, even 
+if it is paused. Press `s` to save manually.
+
+The tracker is saved in a file named `{task}.csv` where `{task}` is the name of the task given when launching the tracker. If no file by that name exists, one will be created. If no task were provided when launching the tracker, it will be saved under `None.csv`.
+
+The created file contains the following columns:
+
+- `Started`: the date and time at which the tracker was launched.
+- `Last Saved`: the date and time at which the tracker was saved.
+- `Logged`: the time logged by the tracker since it started (excluding paused time) under the format `hh:mm:ss`.
+- `Total`: the total time logged in the file under the format `hh:mm:ss`.
+
+### Pause
+
+Press `p` to pause or unpause the timer. While the timer is not updated when the tracker is paused, it is still auto saved every minute.
+
+### Quit
+
+Press `q` or `CTRL-C` (`CMD-C`) to quit the tracker. The total logged time will be displayed in the command line and auto saved in a CSV file.

@@ -36,6 +36,14 @@ class Feeder:
                 while sys.stdin in select([sys.stdin], [], [], 0)[0]:
                     line = sys.stdin.read(1)
                     if line.strip().lower() == "q":
+                        save = Save(
+                            self.first_start,
+                            self.paused,
+                            self.recorded_time,
+                            self.start,
+                            self.task
+                        )
+                        save.save_to_csv()
                         self.quit()
                         break
                     elif line.strip().lower() == "p":
@@ -65,9 +73,29 @@ class Feeder:
                         33,
                         timer.get_time_string(self.start, self.recorded_time)
                     )
+
+                if int(time.time()) != int(self.start):
+                    if (int(time.time()) - int(self.start)) % 60 == 0:
+                        save = Save(
+                            self.first_start,
+                            self.paused,
+                            self.recorded_time,
+                            self.start,
+                            self.task
+                        )
+                        save.save_to_csv()
+
                 self.ui.refresh()
                 time.sleep(0.1)
         except KeyboardInterrupt:
+            save = Save(
+                self.first_start,
+                self.paused,
+                self.recorded_time,
+                self.start,
+                self.task
+            )
+            save.save_to_csv()
             self.quit()
 
 
