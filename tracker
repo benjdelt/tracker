@@ -4,7 +4,33 @@ from sys import argv
 
 import display
 
+arguments = {
+    "total": {
+        "switch": "--total",
+        "flag": "-t",
+        "value": False
+    }
+}
+
+def process_arg(arg, arg_type):
+    if arg[arg_type] in argv:
+        arg["value"] = True
+        del(argv[argv.index(arg[arg_type])])
+
+def process_all_args(arguments):
+    for var, arg in arguments.items():
+        process_arg(arg, "switch")
+        process_arg(arg, "flag")
+
+
 if __name__ == "__main__":
-    task = argv[1] if len(argv) > 1 else ""
+
+    process_all_args(arguments)
+
+    if len(argv) > 2:
+        unrecognised = " ".join(argv[2:])
+        exit(f"tracker: unrecognised option(s) '{unrecognised}'")
+
+    task = argv[1] if len(argv) == 2 else ""
     feeder = display.Feeder(task)
     feeder.run()
