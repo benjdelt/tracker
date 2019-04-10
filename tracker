@@ -33,7 +33,7 @@ if __name__ == "__main__":
         unrecognised = " ".join(argv[2:])
         exit(f"tracker: unrecognised option(s) '{unrecognised}'")
 
-    task = argv[1] if len(argv) == 2 else "None"
+    task = argv[1] if len(argv) == 2 else config.default_task
 
     if arguments["total"]["value"]:
         try:

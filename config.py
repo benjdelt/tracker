@@ -15,6 +15,10 @@ file_path = sys.argv[0].split("//")[0]
 with open(f"{file_path}/config.json", "r") as config_file:
     config = json.loads(config_file.read())
     try:
+        default_task = config["default-task"]
+    except:
+        default_task = "miscellaneous"
+    try:
         csv_path = parse_csv_path(config["csv-path"])
     except:
         csv_path = "."
