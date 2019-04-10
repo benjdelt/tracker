@@ -1,6 +1,7 @@
 {
+    "default-task": "miscellaneous",
     "csv-path": "./",
-    "autosave-delay": "0",
+    "autosave-delay": "1:00",
     "autosave-q": true,
     "autosave-c": false
 }

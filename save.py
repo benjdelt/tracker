@@ -10,7 +10,6 @@ class Save:
 
     def __init__(self, first_start, paused, recorded_time, start, task):
         self.task = task
-        self.header = ["Start", "Last Saved", "Logged", "Total"]
         self.row_start = time.ctime(first_start)
 
         if paused:
@@ -24,6 +23,7 @@ class Save:
             "Logged": self.row_logged,
             "Total": self.row_logged
         }
+        self.header = self.current_row.keys()
         self.lines = []
 
     def get_data_from_file(self):

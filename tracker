@@ -1,10 +1,92 @@
 #!/usr/bin/env python3
 
+import csv
+import re
 from sys import argv
 
+import config
 import display
 
+file_path = argv[0].split("//")[0]
+
+arguments = {
+    "total": {
+        "switch": "--total",
+        "flag": "t",
+        "value": False
+    },
+    "help": {
+        "switch": "--help",
+        "flag": "h",
+        "value": False
+    }
+}
+
+
+def flatten(li):
+    if li == []:
+        return li
+    if type(li[0]) == list:
+        return flatten(li[0]) + flatten(li[1:])
+    return li[:1] + flatten(li[1:])
+
+
+def get_flags():
+    flags = re.findall(r"\s(-[a-zA-Z]+)", " ".join(argv))
+    for ind, flag in enumerate(flags):
+        del(argv[argv.index(flag)])
+        flags[ind] = list(flag[1:])
+    return flatten(flags)
+
+
+def get_switches():
+    switches = re.findall(r"\s(--[a-zA-Z]+)", " ".join(argv))
+    for ind, switch in enumerate(switches):
+        del(argv[argv.index(switch)])
+    return flatten(switches)
+
+
+def process_all_args(arugments):
+    flags = get_flags()
+    switches = get_switches()
+    for var, arg in arguments.items():
+        if arg["flag"] in flags:
+            arg["value"] = True
+            del(flags[flags.index(arg["flag"])])
+        if arg["switch"] in switches:
+            arg["value"] = True
+            del(switches[switches.index(arg["switch"])])
+    return ["-" + flag for flag in flags] + switches
+
+
 if __name__ == "__main__":
-    task = argv[1] if len(argv) > 1 else ""
+
+    unrecognised = process_all_args(arguments)
+    if len(argv) > 2:
+        unrecognised += argv[2:]
+
+    if unrecognised:
+        unrecognised = " ".join(unrecognised)
+        print(f"tracker: unrecognised option(s) '{unrecognised}'")
+        exit("Try 'tracker --help' for more information")
+
+    task = argv[1] if len(argv) == 2 else config.default_task
+
+    if arguments["help"]["value"]:
+        with open(f"{file_path}/usage.txt", "r") as usage:
+            print(usage.read())
+        exit()
+
+    if arguments["total"]["value"]:
+        try:
+            with open(f"{config.csv_path}/{task}.csv", "r") as csvfile:
+                taskreader = csv.DictReader(csvfile)
+                for row in taskreader:
+                    last_task = row
+                total = last_task["Total"]
+                exit(f"Total time in {task}: {total}")
+        except IOError:
+            exit(f"Task not found: '{task}'")
+
     feeder = display.Feeder(task)
     feeder.run()
