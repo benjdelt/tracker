@@ -1,0 +1,7 @@
+tracker [TASK] [OPTIONS]...
+Logs time for a specific TASK to the command line, and autosaves to CSV file.
+
+-h, --help    display usage.
+-t, --total   output the total time spent on a task.
+
+For more information, see https://github.com/benjdelt/tracker/blob/master/README.md

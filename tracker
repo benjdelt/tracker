@@ -3,9 +3,12 @@
 from sys import argv
 import csv
 import re
+from pathlib import Path
 
 import config
 import display
+
+file_path = argv[0].split("//")[0]
 
 arguments = {
     "total": {
@@ -66,15 +69,17 @@ if __name__ == "__main__":
     task = argv[1] if len(argv) == 2 else config.default_task
 
     if arguments["help"]["value"]:
-        usage = """tracker [TASK] [OPTIONS]...
-        Logs time for a specific TASK to the command line, and autosaves to CSV file.
+        with open(f"{file_path}/usage.txt", "r") as usage:
+            print(usage.read())
+        # usage = """tracker [TASK] [OPTIONS]...
+        # Logs time for a specific TASK to the command line, and autosaves to CSV file.
 
-        - `-h`, `--help`    display usage.
-        - `-t`, `--total`   output the total time spent on a task.
+        # - `-h`, `--help`    display usage.
+        # - `-t`, `--total`   output the total time spent on a task.
 
-        For more information, see https://github.com/benjdelt/tracker/blob/master/README.md
-        """
-        exit(usage)
+        # For more information, see https://github.com/benjdelt/tracker/blob/master/README.md
+        # """
+        exit()
 
     if arguments["total"]["value"]:
         try:
