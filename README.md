@@ -43,10 +43,15 @@ Once Python 3 is installed, you can start with Tracker:
 ### Start
 
 ```bash
-$ tracker [TASK]
+$ tracker [TASK] [OPTIONS]...
 ```
 
 Logs time for a specific TASK to the command line. See [Configuration](#Configuration) for autosave features.
+
+#### Options
+
+- `-h`, `--help`    display usage.
+- `-t`, `--total`   output the total time spent on a task.
 
 ### Task
 
@@ -58,7 +63,7 @@ The task name can't start with a dash (`-`) or contain spaces.
 
 The tracker will be autosaved upon quitting as well as every minute since the timer has started (by default, see [Configuration](#Configuration) to change the autosave behavior), even if it is paused. Press `s` to save manually.
 
-The tracker is saved under the current folder by default (see [Configuration](#Configuration) to change the destination folder) in a file named `{task}.csv` where `{task}` is the name of the task given when launching the tracker. If no file by that name exists, one will be created. If no task were provided when launching the tracker, it will be saved under `None.csv`.
+The tracker is saved under the current folder by default (see [Configuration](#Configuration) to change the destination folder) in a file named `{task}.csv` where `{task}` is the name of the task given when launching the tracker. If no file by that name exists, one will be created. If no task were provided when launching the tracker, it will be saved under `miscellaneous.csv` (See [Configuration](#Configuration) to change the default name).
 
 The created file contains the following columns:
 
@@ -81,6 +86,7 @@ Press `CTRL-C` / `CMD-C` to quit the tracker by interrupting the process. The to
 
 There is a `config.json` file in the tracker folder that you can edit to easily customize some tracker functionalities.
 
+- `default-task`(String): the name of the CSV file that will be created and in which trackers will be saved if no task is given when launching the tracker. The default value is `miscellaneous`.
 - `csv-path`(String): the absolute or relative path where the CSV files are saved. The files are saved under `{csv-path}/{task}.csv`. The default value is `./`.
 - `autosave-delay`(String): the delay after which the tracker is automatically saved. Provide a string under the format `hh:mm:ss` where `hh` and `mm` are optional, i.e.: for `5:00`, the tracker will be saved every 5 minutes and for `1:00:00`, it will be saved every hour. To diable the autosave feature, set it to `0`. The default value is `1:00`.
 - `autsave-q`(Boolean): if set to `true`, the tracker will be saved when you quit by pressing `q`. The default value is `true`.

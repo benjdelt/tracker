@@ -2,6 +2,7 @@
 
 from sys import argv
 import csv
+import re
 
 import config
 import display
@@ -9,31 +10,71 @@ import display
 arguments = {
     "total": {
         "switch": "--total",
-        "flag": "-t",
+        "flag": "t",
+        "value": False
+    },
+    "help": {
+        "switch": "--help",
+        "flag": "h",
         "value": False
     }
 }
 
-def process_arg(arg, arg_type):
-    if arg[arg_type] in argv:
-        arg["value"] = True
-        del(argv[argv.index(arg[arg_type])])
+def flatten_list(l):
+    if l == []:
+        return l
+    if type(l[0]) == list:
+        return flatten_list(l[0]) + flatten_list(l[1:])
+    return l[:1] + flatten_list(l[1:])
 
-def process_all_args(arguments):
+def get_flags():
+    flags = re.findall(r"\s(-[a-zA-Z]+)", " ".join(argv))
+    for ind, flag in enumerate(flags):
+        del(argv[argv.index(flag)])
+        flags[ind] = list(flag[1:])
+    return flatten_list(flags)
+
+def get_switches():
+    switches = re.findall(r"\s(--[a-zA-Z]+)", " ".join(argv))
+    for ind, switch in enumerate(switches):
+        del(argv[argv.index(switch)])
+    return flatten_list(switches)
+
+def process_all_args(arugments):
+    flags = get_flags()
+    switches = get_switches()
     for var, arg in arguments.items():
-        process_arg(arg, "switch")
-        process_arg(arg, "flag")
-
+        if arg["flag"] in flags:
+            arg["value"] = True
+            del(flags[flags.index(arg["flag"])])
+        if arg["switch"] in switches:
+            arg["value"] = True
+            del(switches[switches.index(arg["switch"])])
+    return ["-" + flag for flag in flags] + switches
 
 if __name__ == "__main__":
 
-    process_all_args(arguments)
-
+    unrecognised = process_all_args(arguments)
     if len(argv) > 2:
-        unrecognised = " ".join(argv[2:])
-        exit(f"tracker: unrecognised option(s) '{unrecognised}'")
+        unrecognised += argv[2:]
+
+    if unrecognised:
+        unrecognised = " ".join(unrecognised)
+        print(f"tracker: unrecognised option(s) '{unrecognised}'")
+        exit("Try 'tracker --help' for more information")
 
     task = argv[1] if len(argv) == 2 else config.default_task
+
+    if arguments["help"]["value"]:
+        usage = """tracker [TASK] [OPTIONS]...
+        Logs time for a specific TASK to the command line, and autosaves to CSV file.
+
+        - `-h`, `--help`    display usage.
+        - `-t`, `--total`   output the total time spent on a task.
+
+        For more information, see https://github.com/benjdelt/tracker/blob/master/README.md
+        """
+        exit(usage)
 
     if arguments["total"]["value"]:
         try:
