@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 from sys import argv
+import csv
 
+import config
 import display
 
 arguments = {
@@ -31,6 +33,19 @@ if __name__ == "__main__":
         unrecognised = " ".join(argv[2:])
         exit(f"tracker: unrecognised option(s) '{unrecognised}'")
 
-    task = argv[1] if len(argv) == 2 else ""
+    task = argv[1] if len(argv) == 2 else "None"
+
+    if arguments["total"]["value"]:
+        try:
+            with open(f"{config.csv_path}/{task}.csv", "r") as csvfile:
+                taskreader = csv.DictReader(csvfile)
+                for row in taskreader:
+                    last_task = row
+                total = last_task["Total"]
+                exit(f"Total time in {task}: {total}")
+        except IOError:
+            exit(f"Task not found: '{task}'")
+            
+
     feeder = display.Feeder(task)
     feeder.run()

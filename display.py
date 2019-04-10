@@ -12,7 +12,7 @@ class Feeder:
     def __init__(self, task):
         self.running = False
         self.ui = UserInterface()
-        self.task = task or "None"
+        self.task = task
         self.first_start = time.time()
         self.start = time.time()
         self.recorded_time = 0

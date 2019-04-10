@@ -52,6 +52,8 @@ Logs time for a specific TASK to the command line. See [Configuration](#Configur
 
 The name of a task can be provided in the command line when launching the tracker. It allows you to categorize your trackers according to different tasks. The task name will be used as the CSV file name when the tracker is saved.
 
+The task name can't start with a dash (`-`) or contain spaces. 
+
 ### Save
 
 The tracker will be autosaved upon quitting as well as every minute since the timer has started (by default, see [Configuration](#Configuration) to change the autosave behavior), even if it is paused. Press `s` to save manually.
