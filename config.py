@@ -38,7 +38,7 @@ try:
             autosave_c = False
 except FileNotFoundError:
     with open(f"{file_path}/config.json", "w+") as config_file:
-        with open(f"{file_path}/conf-init.txt", "r") as sourcefile:
+        with open(f"{file_path}/.conf-init.txt", "r") as sourcefile:
             content = sourcefile.read()
             config_file.write(content)
 

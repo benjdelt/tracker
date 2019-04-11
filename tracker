@@ -73,7 +73,7 @@ if __name__ == "__main__":
     task = argv[1] if len(argv) == 2 else config.default_task
 
     if arguments["help"]["value"]:
-        with open(f"{file_path}/usage.txt", "r") as usage:
+        with open(f"{file_path}/.usage.txt", "r") as usage:
             print(usage.read())
         exit()
 
