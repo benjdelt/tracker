@@ -1,6 +1,6 @@
 import json
-import sys
 import os
+import sys
 from pathlib import Path
 
 import timer
@@ -18,30 +18,30 @@ try:
         config = json.loads(config_file.read())
         try:
             default_task = config["default-task"]
-        except:
+        except BaseException:
             default_task = "miscellaneous"
         try:
             csv_path = parse_csv_path(config["csv-path"])
-        except:
+        except BaseException:
             csv_path = "."
         try:
             autosave_delay = timer.parse_time_string(config["autosave-delay"])
-        except:
+        except BaseException:
             autosave_delay = 60
         try:
             autosave_q = bool(config["autosave-q"])
-        except:
+        except BaseException:
             autosave_q = True
         try:
             autosave_c = bool(config["autosave-c"])
-        except:
+        except BaseException:
             autosave_c = False
 except FileNotFoundError:
     with open(f"{file_path}/config.json", "w+") as config_file:
         with open(f"{file_path}/conf-init.txt", "r") as sourcefile:
             content = sourcefile.read()
             config_file.write(content)
-    
+
     # Restart tracker
     python = sys.executable
     os.execl(python, python, * sys.argv)
