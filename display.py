@@ -1,7 +1,7 @@
+import curses
 import sys
 import time
 from select import select
-import curses
 
 import config
 import timer
