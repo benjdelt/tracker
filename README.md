@@ -84,7 +84,7 @@ Press `CTRL-C` / `CMD-C` to quit the tracker by interrupting the process. The to
 
 ### Configuration
 
-There is a `config.json` file in the tracker folder that you can edit to easily customize some tracker functionalities.
+When running the tracker for the first time, a `config.json` file is generated in the tracker folder. You can edit that file to easily customize some functionalities.
 
 - `default-task`(String): the name of the CSV file that will be created and in which trackers will be saved if no task is given when launching the tracker. The default value is `miscellaneous`.
 - `csv-path`(String): the absolute or relative path where the CSV files are saved. The files are saved under `{csv-path}/{task}.csv`. The default value is `./`.
