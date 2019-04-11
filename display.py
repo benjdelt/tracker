@@ -1,3 +1,4 @@
+import curses
 import sys
 import time
 from select import select
@@ -20,7 +21,8 @@ class Feeder:
 
     def run(self):
         self.running = True
-        self.ui.win.addstr(11, 1, f"Task: {self.task}")
+        self.ui.win.addstr(11, 1, f"Task: ")
+        self.ui.win.addstr(11, 7, f"{self.task}", curses.color_pair(2))
         self.feed()
 
     def quit(self):
@@ -58,7 +60,7 @@ class Feeder:
                                 self.start,
                                 self.recorded_time
                             )
-                            self.ui.win.addstr(14, 29, "**PAUSED**")
+                            self.ui.win.addstr(14, 29, "**PAUSED**", curses.color_pair(1))
                             self.paused = True
                     elif line.strip().lower() == "s":
                         save = Save(
@@ -73,7 +75,8 @@ class Feeder:
                     self.ui.win.addstr(
                         9,
                         33,
-                        timer.get_time_string(self.start, self.recorded_time)
+                        timer.get_time_string(self.start, self.recorded_time),
+                        curses.A_BOLD
                     )
                 if not config.autosave_delay == 0:
                     if int(time.time()) != int(self.start):
