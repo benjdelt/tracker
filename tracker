@@ -105,6 +105,14 @@ if __name__ == "__main__":
         print(f"autosave-q: {config.autosave_q}")
         print(f"autosave-c: {config.autosave_c}")
         exit()
-
+    
+    if arguments["setconfig"]["value"]:
+        default_task = input(f"default-task: ")
+        csv_path = input(f"csv-path: ")
+        autosave_delay = input(f"autosave-delay: ")
+        autosave_q = input(f"autosave-q: ")
+        autosave_c = input(f"autosave-c: ")
+        exit()
+        
     feeder = display.Feeder(task)
     feeder.run()
