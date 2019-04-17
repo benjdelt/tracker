@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import csv
+import json
 import re
 from sys import argv
 
 import config
 import display
+import timer
 
 file_path = argv[0].split("//")[0]
 
@@ -18,6 +20,16 @@ arguments = {
     "help": {
         "switch": "--help",
         "flag": "h",
+        "value": False
+    },
+    "getconfig": {
+        "switch": "--getconfig",
+        "flag": "g",
+        "value": False
+    },
+    "setconfig": {
+        "switch": "--setconfig",
+        "flag": "s",
         "value": False
     }
 }
@@ -87,6 +99,35 @@ if __name__ == "__main__":
                 exit(f"Total time in {task}: {total}")
         except IOError:
             exit(f"Task not found: '{task}'")
+
+    if arguments["getconfig"]["value"]:
+        print(f"default-task: {config.default_task}")
+        print(f"csv-path: {config.csv_path}")
+        print(f"autosave-delay: {config.autosave_delay}")
+        print(f"autosave-q: {config.autosave_q}")
+        print(f"autosave-c: {config.autosave_c}")
+        exit()
+
+    if arguments["setconfig"]["value"]:
+        default_task = input(f"default-task: ") or config.default_task
+        csv_path = input(f"csv-path: ") or config.csv_path
+        autosave_delay = input(f"autosave-delay: ") or timer.format_time(config.autosave_delay)
+        autosave_q = input(f"autosave-q: ") or str(config.autosave_q)
+        autosave_q = False if autosave_q.lower() == "false" else True
+        autosave_c = input(f"autosave-c: ") or str(config.autosave_c)
+        autosave_c = False if autosave_c.lower() == "false" else True
+        with open(f"{file_path}/config.json", "w+") as config_file:
+            content = json.dumps(
+                {
+                    "default-task": default_task,
+                    "csv-path": csv_path,
+                    "autosave-delay": autosave_delay,
+                    "autosave-q": autosave_q,
+                    "autosave-c": autosave_c
+                }
+            )
+            config_file.write(content)
+        exit()
 
     feeder = display.Feeder(task)
     feeder.run()

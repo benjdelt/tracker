@@ -52,6 +52,8 @@ Logs time for a specific TASK to the command line. See [Configuration](#Configur
 
 - `-h`, `--help`    display usage.
 - `-t`, `--total`   output the total time spent on a task.
+- `-g`, `--getconfig` display the content of the configuration file to the command line
+- `-s`, `--setconfig` provide prompts to the command line to change the configuration. If no value is provided for a setting, the current value is kept.
 
 ### Task
 
@@ -84,10 +86,12 @@ Press `CTRL-C` / `CMD-C` to quit the tracker by interrupting the process. The to
 
 ### Configuration
 
-When running the tracker for the first time, a `config.json` file is generated in the tracker folder. You can edit that file to easily customize some functionalities.
+A `config.json` file is generated in the tracker folder when running the tracker for the first time or if the configuration file cannot be found. You can edit that file to easily customize some functionalities. You can also use the `--getconfig` (`-g`) option to display the current configuration in the command line and the `--setconfig` (`-s`) to edit it in the command line.
 
 - `default-task`(String): the name of the CSV file that will be created and in which trackers will be saved if no task is given when launching the tracker. The default value is `miscellaneous`.
 - `csv-path`(String): the absolute or relative path where the CSV files are saved. The files are saved under `{csv-path}/{task}.csv`. The default value is `./`.
 - `autosave-delay`(String): the delay after which the tracker is automatically saved. Provide a string under the format `hh:mm:ss` where `hh` and `mm` are optional, i.e.: for `5:00`, the tracker will be saved every 5 minutes and for `1:00:00`, it will be saved every hour. To diable the autosave feature, set it to `0`. The default value is `1:00`.
 - `autsave-q`(Boolean): if set to `true`, the tracker will be saved when you quit by pressing `q`. The default value is `true`.
 - `autsave-c`(Boolean): if set to `true`, the tracker will be saved when you interrupt the process (`CTRL-C` / `CMD-C`). The default value is `false`.
+
+**In cas of a configuration issue, an easy fix is to delete the `config.json` file and launch the tracker to recreate one automatically.**
