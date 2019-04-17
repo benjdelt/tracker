@@ -52,6 +52,8 @@ Logs time for a specific TASK to the command line. See [Configuration](#Configur
 
 - `-h`, `--help`    display usage.
 - `-t`, `--total`   output the total time spent on a task.
+- `-g`, `--getconfig` display the content of the configuration file to the command line
+- `-s`, `--setconfig` provide prompts to the command line to change the configuration. If no value is provided for a setting, the current value is kept.
 
 ### Task
 
