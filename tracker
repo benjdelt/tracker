@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 import csv
+import json
 import re
 from sys import argv
 
+import timer
 import config
 import display
 
@@ -107,12 +109,25 @@ if __name__ == "__main__":
         exit()
     
     if arguments["setconfig"]["value"]:
-        default_task = input(f"default-task: ")
-        csv_path = input(f"csv-path: ")
-        autosave_delay = input(f"autosave-delay: ")
-        autosave_q = input(f"autosave-q: ")
-        autosave_c = input(f"autosave-c: ")
+        default_task = input(f"default-task: ") or config.default_task
+        csv_path = input(f"csv-path: ") or config.csv_path
+        autosave_delay = input(f"autosave-delay: ") or timer.format_time(config.autosave_delay)
+        autosave_q = input(f"autosave-q: ") or str(config.autosave_q)
+        autosave_q = False if autosave_q.lower() == "false" else True
+        autosave_c = input(f"autosave-c: ") or str(config.autosave_c)
+        autosave_c = False if autosave_c.lower() == "false" else True
+        with open(f"{file_path}/config.json", "w+") as config_file:
+            content = json.dumps(
+                {
+                    "default-task": default_task,
+                    "csv-path": csv_path,
+                    "autosave-delay": autosave_delay,
+                    "autosave-q": autosave_q,
+                    "autosave-c": autosave_c
+                }
+            )
+            config_file.write(content)
         exit()
-        
+
     feeder = display.Feeder(task)
     feeder.run()
