@@ -124,7 +124,8 @@ if __name__ == "__main__":
                     "autosave-delay": autosave_delay,
                     "autosave-q": autosave_q,
                     "autosave-c": autosave_c
-                }
+                },
+                indent=4
             )
             config_file.write(content)
         exit()
