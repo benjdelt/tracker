@@ -101,11 +101,8 @@ if __name__ == "__main__":
             exit(f"Task not found: '{task}'")
 
     if arguments["getconfig"]["value"]:
-        print(f"default-task: {config.default_task}")
-        print(f"csv-path: {config.csv_path}")
-        print(f"autosave-delay: {config.autosave_delay}")
-        print(f"autosave-q: {config.autosave_q}")
-        print(f"autosave-c: {config.autosave_c}")
+        for setting, value in config.config.items():
+            print(f"{setting}: {value}")
         exit()
 
     if arguments["setconfig"]["value"]:
@@ -124,7 +121,8 @@ if __name__ == "__main__":
                     "autosave-delay": autosave_delay,
                     "autosave-q": autosave_q,
                     "autosave-c": autosave_c
-                }
+                },
+                indent=4
             )
             config_file.write(content)
         exit()
