@@ -11,8 +11,8 @@ def parse_csv_path(csv_path):
         csv_path = str(Path.home()) + csv_path[1:]
     return csv_path[:-1] if csv_path[-1] == "/" else csv_path
 
+file_path = sys.argv[0].split("//")[0] if len(sys.argv[0].split("//")) > 1 else "."
 
-file_path = sys.argv[0].split("//")[0]
 try:
     with open(f"{file_path}/config.json", "r") as config_file:
         config = json.loads(config_file.read())
